@@ -130,7 +130,7 @@ const mathjs = require('mathjs')
 const { createCanvas, loadImage } = require('canvas');
 const { decryptMedia } = require('@open-wa/wa-decrypt');
 const tunggu = `*_Tunggu Sebentar_*`
-const aikey = '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'
+const aikey = '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'
 const AI2D = require('@arugaz/ai2d')
 const { JadiAnime } = require('jadianime-ts')
 const acrCloud = require("acrcloud");
@@ -753,7 +753,7 @@ let {
 break
             //zahwazein
             case 'jadianime':
-            if (!isCreator) return m.reply('*_Under Maintenance_*')
+            //if (!isCreator) return m.reply('*_Under Maintenance_*')
             if(!isMedia) return m.reply(`_kirim gambar dengan caption !jadianime/ tag gambar_`)
             {
                     let {
@@ -763,13 +763,15 @@ break
                     } = require('./lib/uploader')
                     let media = await dans.downloadAndSaveMediaMessage(qmsg)
                     let anu = await TelegraPh(media)
+              console.log(anu)
               teksee = `Ada Yang Gunain Fitur Spesial Bos (JadiAnime)\n\nDari : ${m.sender}\nNama : ${pushname}\n\n\n\nNih Medianya \n${anu}`
               const lpr = await fetchJson(`https://api.telegram.org/bot6072392827:AAHejwYCvnt_TpZ_vQVRcUnjpJky5mWhY-4/sendMessage?chat_id=1177315536&text=${teksee}`)
               
-					m.reply(`_Memproses..._`)
-                    //const hsl = await fetchJson(`https://api.zahwazein.xyz/photoeditor/jadianime?url=${anu}&apikey=${zahkeyja}`)
+					m.reply(`_Memproses..._\nJika Lama dalam Memproses Berarti Terjadi Error`)
             try {
-					dans.sendImage(m.chat, `https://api.caliph.biz.id/api/animeai?img=${anu}&apikey=caliphkey`, `_Nih Kak_`, m)
+              //const gmbr = await fetchJson(`https://api.caliph.biz.id/api/animeai?img=${anu}&apikey=caliphkey`)
+              //console.log(gmbr)
+					dans.sendImage(m.chat, `https://api.lolhuman.xyz/api/imagetoanime?apikey=${lolkey}&img=${anu}`, `_Nih Kak_`, m)
                 } catch {
                     m.reply('_Terjadi Kesalahan Saat Memproses_')
                 }
@@ -835,6 +837,24 @@ break
             //end zah
 
           ///Gratis
+            case 'cobsteks66':
+				{
+				m.reply(args[0])
+          m.reply(args[0])
+				}
+				
+				break
+            case 'emojimix': {
+		let [emoji1, emoji2] = text.split`+`
+		if (!emoji1) throw `Example : ${prefix + command} 😅+🤔`
+		if (!emoji2) throw `Example : ${prefix + command} 😅+🤔`
+		let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
+		for (let res of anu.results) {
+		    let encmedia = await dans.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags })
+		    await fs.unlinkSync(encmedia)
+		}
+	    }
+	    break
           case 'dans':
 case '?':
 try{
@@ -846,12 +866,98 @@ m.reply(gb.respon)
 m.reply('Saya Tidak Mengerti')
 }
 break 
+
+            case 'hdken':{
+                if (!/video/.test(mime) && !/audio/.test(mime)) throw `Kirim/Reply Video/Audio Yang Ingin Dijadikan Audio Dengan Caption ${prefix + command}`
+                m.reply(mess.wait)
+                let media = await dans.downloadMediaMessage(qmsg)
+                dans.sendMessage(m.chat, {
+                        video: {
+                            url: media
+                        },
+                        mimetype: 'video/mp4',
+                        fileName: `tes.mp4`
+                    }, {
+                        quoted: m
+                    })
+            }
+            break
   
             //gratis
 
 
             
             ///lolhuman
+            case 'cuaca':
+          //case 'weather':
+try{
+if(!text) return m.reply(`_Masukan Daerah_`)
+const weat = await fetchJson(`https://api.lolhuman.xyz/api/cuaca/${text}?apikey=${lolkey}`)
+a = weat.result
+  if (a.tempat === '') return m.reply(`_Informasi Cuaca Untuk *${text}* Tidak Tersedia_`)
+teks = `*Informasi Cuaca ${a.tempat}*
+
+*Suhu :* ${a.suhu}
+*Cuaca :* ${a.cuaca}
+*Deskripsi :* ${a.description}
+*Kelembapan :* ${a.kelembapan}
+*Kecepatan Angin :* ${a.angin}
+*Kualitas udara :* ${a.udara}` 
+  m.reply(teks)
+} catch {
+m.reply(`_Informasi Cuaca Untuk ${text} Tidak Tersedia_`)
+}
+break
+            case 'upscale':
+            if(!isMedia) return m.reply(`_kirim gambar dengan caption !jadianime/ tag gambar_`)
+            {
+                    let {
+                        UploadFileUgu,
+                        webp2mp4File,
+                        TelegraPh
+                    } = require('./lib/uploader')
+                    let media = await dans.downloadAndSaveMediaMessage(qmsg)
+                    let anu = await TelegraPh(media)
+              console.log(anu)
+              teksee = `Ada Yang Gunain Fitur Spesial Bos (Upscale)\n\nDari : ${m.sender}\nNama : ${pushname}\n\n\n\nNih Medianya \n${anu}`
+              const lpr = await fetchJson(`https://api.telegram.org/bot6072392827:AAHejwYCvnt_TpZ_vQVRcUnjpJky5mWhY-4/sendMessage?chat_id=1177315536&text=${teksee}`)
+					m.reply(`_Memproses..._`)
+            try {
+					dans.sendImage(m.chat, `https://api.lolhuman.xyz/api/upscale?apikey=${lolkey}&img=${anu}`, `_Nih Kak_`, m)
+					dans.sendMessage(m.chat, {
+                    document: `https://api.lolhuman.xyz/api/upscale?apikey=${lolkey}&img=${anu}`,
+                    mimetype: 'image/jpg',
+                    fileName: `UpscaleDansBot.jpg`
+                }, {
+                    quoted: m
+                })
+                } catch (err) {
+                    m.reply('_Terjadi Kesalahan Saat Memproses_')
+                }
+        }
+                break
+				
+				
+				
+case 'sround': {
+                if (args.length < 1) return m.reply("Mau Cari Apa?")
+				let {
+                        UploadFileUgu,
+                        webp2mp4File,
+                        TelegraPh
+                    } = require('./lib/uploader')
+                    let media = await dans.downloadAndSaveMediaMessage(qmsg)
+                    let anu = await TelegraPh(media)
+              console.log(anu)
+              teksee = `Ada Yang Gunain Fitur Spesial Bos (sround)\n\nDari : ${m.sender}\nNama : ${pushname}\n\n\n\nNih Medianya \n${anu}`
+              const lpr = await fetchJson(`https://api.telegram.org/bot6072392827:AAHejwYCvnt_TpZ_vQVRcUnjpJky5mWhY-4/sendMessage?chat_id=1177315536&text=${teksee}`)
+				m.reply(`_Memproses..._`)
+                await dans.sendImageAsSticker(m.chat, `https://api.lolhuman.xyz/api/editor/roundimage?apikey=${lolkey}&img=${anu}`, m, {
+                    packname: global.packname,
+                    author: global.author
+                })
+            }
+            break
             case 'pensil':
             
             if(!isMedia) return m.reply(`_kirim gambar dengan caption !jadianime/ tag gambar_`)
@@ -1374,7 +1480,7 @@ dans.sendMessage(m.chat, { image: { url: res.img }, caption: '⭔ nih' }, { quot
                     m.reply('_Terjadi Kesalahan Saat Memproses_')
                 }
                 break
-           case 'tebak':
+           case 'tebakyryr':
 				//try{
 				
 currentQuestionIndex = 0;
@@ -1558,11 +1664,32 @@ break
             break
 
             case 'tts':
+                if (!text) return m.reply('_masukan bahasa dan teks_\ncontoh : !tts id|dansbot\n\nbahasa :https://id.wikipedia.org/wiki/Daftar_bahasa_menurut_ISO_639-2')
+               bahasa = text.split('|')[0] ? text.split('|')[0] : '-'
+                
+                teksnyi = text.split('|')[1] ? text.split('|')[1] : '-'
+                 if (!teksnyi) return m.reply('_masukan teks\ncontoh : !tts id|dansbot_')
+                try {
+                    dans.sendMessage(m.chat, {
+                        audio: {
+                            url: `https://api.lolhuman.xyz/api/gtts/${bahasa}?apikey=${lolkey}&text=${teksnyi}`
+                        },
+                        mimetype: 'audio/mpeg',
+                        fileName: `tts_dansbot.mp3`
+                    }, {
+                        quoted: m
+                    })
+                } catch {
+                    m.reply(`_Terjadi Kesalahan_`)
+                }
+                break
+            
+          case 'tts2':
                 if (!text) return m.reply('_Masukan Teks_')
                 try {
                     dans.sendMessage(m.chat, {
                         audio: {
-                            url: `https://saipulanuar.ga/api/text-to-audio/tts?text=${text}&idbahasa=id`
+                            url: `https://api.lolhuman.xyz/api/gtts/id?apikey=${lolkey}&text=${text}`
                         },
                         mimetype: 'audio/mpeg',
                         fileName: `tts_dansbot.mp3`
@@ -1599,16 +1726,18 @@ break
                     } = require('./lib/uploader')
                     let media = await dans.downloadAndSaveMediaMessage(qmsg)
                     let anu = await TelegraPh(media)
-                    const hsl = await fetchJson(`https://api.akuari.my.id/other/removebg?link=${anu}`)
-                    await dans.sendImageAsSticker(m.chat, hsl.hasil, m, {
+                  m.reply('memproses...')
+                    //const hsl = await fetchJson(`https://api.akuari.my.id/other/removebg?link=${anu}`)
+                    await dans.sendImageAsSticker(m.chat, `https://api.lolhuman.xyz/api/removebg?apikey=${lolkey}&img=${anu}`, m, {
                         packname: 'By.DansBot',
                         author: pushname
                     })
                 } catch {
-                    m.reply('_Terjadi Kesalahan Saat Memproses_')
+                    m.reply('_Terjadi Kesalahan Saat Memproses, harap Ulangi Beberapa Saat lagi_')
                 }
                 break
             case 'removebg':
+          case 'nobg':
             if(!isgambarek) return m.reply('_Tag Gambar/ Kirim Gambar dengan caption .removebg_')
                 try {
                     let {
@@ -1618,11 +1747,12 @@ break
                     } = require('./lib/uploader')
                     let media = await dans.downloadAndSaveMediaMessage(qmsg)
                     let anu = await TelegraPh(media)
+                  console.log(anu)
                   m.reply(`_memproses..._`)
                     //const hsl = await fetchJson(`https://api.akuari.my.id/other/removebg?link=${anu}`)
                     dans.sendImage(m.chat, `https://api.lolhuman.xyz/api/removebg?apikey=${lolkey}&img=${anu}`, `_Nih Kak_`, m)
                 } catch {
-                    m.reply('_Terjadi Kesalahan Saat Memproses_')
+                    m.reply('_Terjadi Kesalahan Saat Memproses, Harap Ulangi Beberapa Saat Lagi_')
                 }
                 break
                 ////shortlink
@@ -1720,12 +1850,11 @@ break
 =======================
 *=======================*
 
-- - - advertisement  - - -
+- - - _*advertisement*_  - - -
 
-- Youtube Premium 4 bulan 15k
-- Sewa Bot Bayar Seikhlasnya
+- Youtube Premium 4 bulan *15k*
+- Sewa Bot *Bayar Seikhlasnya*
 chat wa.me/6288983554021
-
 *=======================*
 =======================
 
@@ -1746,6 +1875,7 @@ menunya:
 !chat
 !chat2
 !fakewa
+!emojimix
 
 ✦ *Photo Editor* ✦
 !toonme
@@ -1952,6 +2082,33 @@ recode : Ardan
                 m.reply(anu)
             }
             break
+            case 'react': {
+                if (!isCreator) throw mess.owner
+				 dans.sendMessage(m.chat, { react: { text: text, key: { remoteJid: m.chat, id: quoted.id } }});
+            }
+            break 
+          case 'react2': {
+                if (!isCreator) throw mess.owner
+                reactionMessage = {
+                    react: {
+                        text: args[0],
+                        key: { remoteJid: m.chat, id: quoted.id }
+                    }
+                }
+                dans.sendMessage(m.chat, reactionMessage)
+            }
+            break  
+            case 'hidetag':
+          case 'hd':
+          case 'tagall':{
+            if (!m.isGroup) throw mess.group
+            if (!isBotAdmins) throw mess.botAdmin
+            if (!isAdmins && !isCreator) throw mess.admin
+            teksnyo = text.split('%')[0] ? text.split('%')[0] : '-'
+            dans.sendMessage(m.chat, { text : text , mentions: participants.map(a => a.id)}, { quoted: m })
+            }
+            break
+            
             case 'balas': {
                 if (!isCreator) throw mess.owner
                 a = args.join(' ')
@@ -2021,9 +2178,15 @@ recode : Ardan
                 })
             }
             break
-            case 'ping':
-        case 'p': 
+            case 'bot': {
+                
+				 dans.sendMessage(m.chat, { react: { text: '✅', key: m.key }});
+            }
+            break 
+          case 'ping':
+            case 'p':
 		{	
+      //dans.sendMessage(m.chat, { react: { text: '✅', key: m.key }});
 			const used = process.memoryUsage()
                 const cpus = os.cpus().map(cpu => {
                     cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0)
@@ -2063,9 +2226,14 @@ ${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type =>
 _CPU Core(s) Usage (${cpus.length} Core CPU)_
 ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}` : ''}
                 `
+      
+      //dans.sendMessage(m.chat, { react: { text: '✅' }});
+      
             m.reply(`*pong!!*\n\nKecepatan Respon ${latensi.toFixed(4)} _Second_ \n ${oldd - neww} _miliseconds_\n\nRuntime : ${runtime(process.uptime())}
 
 💻 Info Server\n͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏${respon}`)
+      
+     
 		}
                 break
             case 'addmsg': {
@@ -2898,22 +3066,24 @@ if (islagune) {
     
 return
 }
-                    if (!text) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu bot whatsapp`)
-                    const configuration = new Configuration({
-                        apiKey: aikey,
-                    });
-                    const openai = new OpenAIApi(configuration);
+if (!text) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu bot whatsapp`)
+const gptText = text
+const configuration = new Configuration({
+    apiKey: aikey,
+});
+const openai = new OpenAIApi(configuration);
 
-                    const response = await openai.createCompletion({
-                        model: "text-davinci-003",
-                        prompt: text,
-                        temperature: 1,
-                        max_tokens: 4000,
-                        top_p: 1.0,
-                        frequency_penalty: 0.0,
-                        presence_penalty: 0.0,
-                    });
-                    m.reply(`${response.data.choices[0].text}\n\n`)
+const chatCompletion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [{
+        role: "user",
+        content: gptText
+    }],
+});
+
+let resultGpt = chatCompletion.data.choices[0].message;
+console.log(resultGpt.content)
+m.reply(resultGpt.content)
                 } catch (err) {
                     console.log(err)
                     //m.reply('Maaf, sepertinya ada yang error')
@@ -3622,20 +3792,22 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                   //if (!isCreator) return m.reply('*_Under Maintenance_*')
                     if (!text) return m.reply('Linknya?')
                     m.reply(tunggu)
-                    //const igs2 = await fetchJson(`https://api.zahwazein.xyz/downloader/instagram?apikey=${zahkey}&url=${text}`)
-                    const igs = await fetchJson(`https://api.lolhuman.xyz/api/instagram2?apikey=${lolkey}&url=${text}`)
-
-                    const teksx = `*IG DOWNLOADER*\n\n*Dari:* ${igs.result.account.username} _(${igs.result.account.full_name})_\n${igs.result.caption} \n\n*_Media Sedang Dikirim._*\n\n@dans_bot`
-                    m.reply(teksx)
-                    for (let i of igs.result.media) {
+                    const igs2 = await fetchJson(`https://api.akuari.my.id/downloader/igdl?link=${text}`)
+                    //const igs = await fetchJson(`https://api.lolhuman.xyz/api/instagram2?apikey=${lolkey}&url=${text}`)
+                  
+                   const teks2 = `_Tunggu Sebentar_`
+                    //const teksx = `*IG DOWNLOADER*\n\n*Dari:* ${igs.result.account.username} _(${igs.result.account.full_name})_\n${igs.result.caption} \n\n*_Media Sedang Dikirim._*\n\n@dans_bot`
+                    //m.reply(teks2)
+                 for (let i of igs2.respon) {
                         //let link = await getBuffer(i.url)
                         console.log(i)
-                        setTimeout(() => {
+                        //setTimeout(() => {
                     dans.sendFileUrl(m.chat, i, `_Nih Kak_`, m)
-                }, 5000)
+               // }, 5000)
                         
                         //dans.sendMessage(m.chat, { video: { url: i }, mimetype: 'video/mp4', fileName: `ig.mp4`, caption: `_Nih Kak_` }, { quoted: m })
                     }
+                  return
                 } 
                 catch {
                   m.reply('_Terjadi Kesalahan, Mencoba Menggunakan Server Ke 2_')
@@ -4012,6 +4184,7 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                     urllagu = anu.url
                     const yt = await youtubedl(urllagu).catch(async () => await youtubedlv2(urllagu))
                     const dl_url = await yt.audio['128kbps'].download()
+                  console.log(dl_url)
                     teks = `Mengirim lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
                     m.reply(teks)
                     dans.sendMessage(m.chat, {
@@ -4033,15 +4206,15 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                 if (!text) return m.reply('_Harap Masukan Link_')
                 //if (!isTiktok) return m.reply(`_Harap Masukan Link Dari Tiktok_`)
                 try {
-                    const adon = await fetchJson(`https://api.akuari.my.id/downloader/tiktok3?link=${text}`)
+                    const adon = await fetchJson(`https://api.lolhuman.xyz/api/tiktok?apikey=${lolkey}&url=${text}`)
                     console.log(adon)
                     m.reply(tunggu)
-                    p1 = adon.hasil
-                    teks = `*Tiktok Downloader By DansBot*\n\n*Judul :* ${p1.video_title}\n*Author :* ${p1.name} _(${p1.username})_\n*Like :* ${p1.like}\n*Komentar :* ${p1.comment}\n*Jumlah Share :* ${p1.share}\n*Penonton :* ${p1.views}\n*Music :* ${p1.music_title} - ${p1.music_author}\n`
+                    p1 = adon.result
+                    teks = `*Tiktok Downloader By DansBot*\n\n*Judul :* ${p1.title}\n*Author :* ${p1.author.nickname} _(${p1.author.username})_\n*Like :* ${p1.statistic.like_count}\n*Komentar :* ${p1.statistic.comment_count}\n*Jumlah Share :* ${p1.statistic.share_count}\n*Jumlah Pemutaran :* ${p1.statistic.play_count}\n`
 
                     dans.sendMessage(m.chat, {
                         video: {
-                            url: p1.download_mp4
+                            url: p1.link
                         },
                         caption: teks,
                         mimetype: 'video/mp4',
@@ -4051,22 +4224,7 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                     })
                   return
                 } catch {
-                    m.reply('_Terjadi Kesalahan, Mencoba Menggunakan Server 2_')
-                    tiktokdlv2(text)
-                        .then((result) => {
-                            // const a = getBuffer()
-                            dans.sendMessage(m.chat, {
-                                video: {
-                                    url: result.video.no_watermark
-                                },
-                                caption: '*Nih kak..*',
-                                mimetype: 'video/mp4',
-                                fileName: `tiktok.mp4`
-                            }, {
-                                quoted: m
-                            })
-                            console.log(result)
-                        })
+                    m.reply('_Terjadi Kesalahan Saat Memproses, harap Ulangi Beberapa Saat lagi_')
                 }
                 break
             case 'tiktokxxx':
@@ -4445,7 +4603,9 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                 }
             }
             break
-            case 'pinterest': {
+            case 'pinterest':
+            case 'pin':
+            {
                 if (!text) return m.reply('Mau Cari Apa?')
                 try {
                     const pin = await fetchJson(`https://api.lolhuman.xyz/api/pinterest?apikey=ardanfajars&query=${text}`)
@@ -4510,13 +4670,16 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
             case 'stickmeme':
             case 'stikmeme':
             case 'stickermeme':
-            case 'stikermeme': {
+            case 'stikermeme': 
+              try{
                 let respond = `Kirim/reply image/sticker dengan caption ${prefix + command} text1|text2`
+              if (/webp/.test(mime)) return 
                 if (!/image/.test(mime)) throw respond
                 if (!text) throw respond
                 m.reply(mess.wait)
                 atas = text.split('|')[0] ? text.split('|')[0] : '-'
                 bawah = text.split('|')[1] ? text.split('|')[1] : '-'
+               
                 let media = await dans.downloadAndSaveMediaMessage(qmsg)
                 let {
                     UploadFileUgu,
@@ -4531,6 +4694,9 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                     author: global.auhor
                 })
                 await fs.unlinkSync(FaTiH)
+            
+            } catch {
+           m.reply('Terjadi Kesalahan')
             }
             break
             case 'ttp2':
@@ -5154,6 +5320,71 @@ break
                 break
 
             default:
+
+            ///auto grub
+                if (ismediah && budy != undefined) {
+                    console.log(budy)
+                    if (isTiktok) {
+                        m.reply(`*Link Tiktok Terdeteksi (${budy})*\n\nBot Akan Kirim Videonya\nTunggu kak...`)
+                        console.log(`iki ngab ${budy}`)
+                        const adon = await fetchJson(`https://api.lolhuman.xyz/api/tiktok?apikey=${lolkey}&url=${budy}`)
+                      //console.log(adon)
+                      console.log('AutoDown Tiktok')
+                    p1 = adon.result
+                    teks = `*Tiktok Downloader By DansBot*\n\n*Judul :* ${p1.title}\n*Author :* ${p1.author.username} _(${p1.author.nickname})_\n*Like :* ${p1.statistic.like_count}\n*Komentar :* ${p1.statistic.comment_count}\n*Jumlah Share :* ${p1.statistic.share_count}\n*Penonton :* ${p1.statistic.play_count}\n`
+                      
+
+                    dans.sendMessage(m.chat, {
+                        video: {
+                            url: p1.link
+                        },
+                        caption: teks,
+                        mimetype: 'video/mp4',
+                        fileName: `tiktok.mp4`
+                    }, {
+                        quoted: m
+                    })
+                      return
+                    }
+                    if (isInsta) {
+                        m.reply(`*Link Instagram Terdeteksi*\n\nBot Akan Kirim Medianya\nTunggu kak...`)
+                        const igs = await fetchJson(`https://api.akuari.my.id/downloader/igdl2?link=${budy}`)
+					console.log(igs)
+                    //const teksx = `*IG DOWNLOADER*\n\n*Dari:* ${igs.result.account.username} _(${igs.result.account.full_name})_\n${igs.result.caption} \n\n*_Media Sedang Dikirim._*\n\n@dans_bot`
+                    //m.reply(teksx)
+                    for (let i of igs.respon) {
+                        //let link = await getBuffer(i.url)
+                        console.log(i)
+                      setTimeout(() => {
+                    dans.sendFileUrl(m.chat, i.url, `_Nih Kak_`, m)
+                }, 5000)
+                       
+                }
+                      return
+                    }
+                    if (isYucup) {
+                      m.reply(`*Link Youtube Terdeteksi (${budy})*\n\nBot Akan Kirim Medianya\nTunggu kak...`)
+                        const yt = await youtubedl(budy).catch(async () => await youtubedlv2(url))
+                    const dl_url = await yt.audio['128kbps'].download()
+                    console.log(dl_url)
+                    let yts = require("yt-search")
+                    let search = await yts(yt.title)
+                    let anu = search.videos[0]
+                    teksnyax = `Mengirim lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
+                    dans.sendImage(m.chat, yt.thumbnail, teksnyax, m)
+                    dans.sendMessage(m.chat, {
+                        audio: {
+                            url: dl_url
+                        },
+                        mimetype: 'audio/mpeg',
+                        fileName: `${anu.title}.mp3`
+                    }, {
+                        quoted: m
+                    })
+                      return
+                    }
+                }
+            
                 if ( isCmd && !isSimi && budy.toLowerCase() != undefined) {
                   console.log('yes')
                     if (m.chat.endsWith('broadcast')) return
@@ -5162,6 +5393,8 @@ break
                     if (!(budy.toLowerCase() in msgs)) return
                     dans.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
                 }
+
+            
             if ( !m.isGroup && isCmd && budy.toLowerCase() != undefined) {
                   console.log('yes')
                     if (m.chat.endsWith('broadcast')) return
@@ -5170,74 +5403,16 @@ break
                     if (!(budy.toLowerCase() in msgs)) return
                     dans.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
                 }
-                ///auto grub
-                if (ismediah && budy != undefined) {
-                    console.log(budy)
-                    if (isTiktok) {
-                        m.reply(`*Link Tiktok Terdeteksi*\n\nBot Akan Kirim Videonya\nTunggu kak...`)
-                        console.log(`iki ngab ${budy}`)
-                        const tt = await fetchJson(`https://api.akuari.my.id/downloader/tiktok3?link=${budy}`)
-                        console.log(tt.hasil)
-                        ttt = tt.hasil
-                        //ttt1 = result.video
-                        //ttt2 = result.backsound
-                        tekso = `*Tiktok Downloader By DansBot*\n\n*Author :* ${ttt.name} _(${ttt.username})_\n*Like :* ${ttt.like}\n*Komentar :* ${ttt.comment}\n*Jumlah Share :* ${ttt.share}\n*Penonton :* ${ttt.views}\n*Music :* ${ttt.music_title} _(${ttt.music_author})_\n`
-                        dans.sendMessage(m.chat, {
-                            video: {
-                                url: ttt.download_mp4_hd
-                            },
-                            mimetype: 'video/mp4',
-                            fileName: `danstiktok.mp4`,
-                            caption: tekso
-                        }, {
-                            quoted: m
-                        })
-                    }
-                    if (isInsta) {
-                        m.reply(`*Link Instagram Terdeteksi*\n\nBot Akan Kirim Medianya\nTunggu kak...`)
-                        //console.log(`iki ngab ${budy}`)
-                        const igs = await fetchJson(`https://api.lolhuman.xyz/api/instagram2?apikey=ardanfajars&url=${budy}`)
-                        //console.log(igs.result.media)
-                        const teksx = `*IG DOWNLOADER*\n\n*Username :* ${igs.result.account.username}\n*Caption :* ${igs.result.caption}\n\n\n@dans_bot`
-                        dans.sendFileUrl(m.chat, igs.result.media[0], teksx, m)
-                    }
-                    if (isYucup) {
-                        const yt = await fetchJson(`https://saipulanuar.ga/api/download/ytmp3?url=${budy}`)
-                        katakata = `*Link Youtube Terdeteksi*\n\nInformasi Link:\n*judul :* ${yt.result.title}\n*Dari :* ${yt.result.channel}\n*Dipublikasikan :* ${yt.result.published}\n\n_Jika Ingin Mendownload Klik Button Dibawah_`
-                        let buttons = [{
-                                buttonId: `ytmp3xx ${budy}`,
-                                buttonText: {
-                                    displayText: 'Audio'
-                                },
-                                type: 1
-                            },
-                            {
-                                buttonId: `ytmp4xx ${budy}`,
-                                buttonText: {
-                                    displayText: 'Video'
-                                },
-                                type: 1
-                            }
-                        ]
-                        let buttonMessage = {
-                            text: katakata,
-                            footer: 'Dans AutoDownload',
-                            buttons: buttons,
-                            headerType: 2
-                        }
-                        dans.sendMessage(m.chat, buttonMessage, {
-                            quoted: m
-                        })
-                    }
-                }
+                
                 //simi sini
                 if (m.isGroup && isSimi && budy != undefined) {
                     console.log(budy)
                     const teks = encodeURIComponent(budy)
-                    muehe = await fetchJson(`https://api.simsimi.net/v2/?text=${teks}&lc=id&cf=false`)
-                    if (muehe.success === "Aku tidak mengerti apa yang kamu katakan.Tolong ajari aku.") return console.log(`rareti`)
-                    console.log(muehe.success)
-                    if (!isTiktok && !isInsta) return m.reply(muehe.success)
+                   const muehe = await fetchJson(`https://api.lolhuman.xyz/api/simi?apikey=ardanfajars&text=${teks}&badword=true`)
+                  console.log(muehe.result)
+                    if (muehe.result === "Aku tidak mengerti apa yang kamu katakan.Tolong ajari aku.") return console.log(`rareti`)
+                    
+                    if (!isTiktok && !isInsta) return m.reply(muehe.result)
 
                 }
                 ///end auto grub

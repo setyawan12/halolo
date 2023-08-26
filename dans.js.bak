@@ -93,12 +93,10 @@ const {
     zippyshare,
     chord
 } = require('@bochilteam/scraper')
-const ttdlee = require("tiktok-video-downloader");
 const hx = require('hxz-api');
 const xa = require('xfarr-api');
 const instagramGetUrl = require("instagram-url-direct")
 //const y2 = require("y2mate-api");
-const ttdl = require("tiktok-video-downloader");
 const { google } = require('googleapis');
 const readline = require('readline');
 let BodyForm = require('form-data')
@@ -132,9 +130,10 @@ const mathjs = require('mathjs')
 const { createCanvas, loadImage } = require('canvas');
 const { decryptMedia } = require('@open-wa/wa-decrypt');
 const tunggu = `*_Tunggu Sebentar_*`
-const aikey = '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'
+const aikey = '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'
 const AI2D = require('@arugaz/ai2d')
 const { JadiAnime } = require('jadianime-ts')
+const acrCloud = require("acrcloud");
 
 const zahkey = 'zenzkey_477ab5983c76'
 const zahkeypt = 'zenzkey_2951e11ea6'
@@ -313,6 +312,10 @@ module.exports = dans = async (dans, m, chatUpdate, store) => {
         const mime = (quoted.msg || quoted).mimetype || ''
         const qmsg = (quoted.msg || quoted)
         const isMedia = /image|video|sticker|audio/.test(mime)
+      		const ispidio = /video/.test(mime)
+		    const islagune = /audio/.test(mime)
+      const isgambarek = /image/.test(mime)
+      
       
         const serial = m.sender
         const isRegistered = _registered.includes(m.sender)
@@ -830,6 +833,24 @@ m.reply('Gagal Mendapatkan URL original')
 }
 break
             //end zah
+
+          ///Gratis
+          case 'dans':
+case '?':
+try{
+if(!text) return m.reply('_Ada Yang mau Ditanyakan_')
+m.reply(`(ᵕᴗᵕ) Mencari...`)
+const gb = await fetchJson(`https://api.akuari.my.id/ai/gbard?chat=${text}`)
+m.reply(gb.respon)
+} catch {
+m.reply('Saya Tidak Mengerti')
+}
+break 
+  
+            //gratis
+
+
+            
             ///lolhuman
             case 'pensil':
             
@@ -1588,6 +1609,7 @@ break
                 }
                 break
             case 'removebg':
+            if(!isgambarek) return m.reply('_Tag Gambar/ Kirim Gambar dengan caption .removebg_')
                 try {
                     let {
                         UploadFileUgu,
@@ -1596,8 +1618,9 @@ break
                     } = require('./lib/uploader')
                     let media = await dans.downloadAndSaveMediaMessage(qmsg)
                     let anu = await TelegraPh(media)
-                    const hsl = await fetchJson(`https://api.akuari.my.id/other/removebg?link=${anu}`)
-                    dans.sendImage(m.chat, hsl.hasil, `_Nih Kak_`, m)
+                  m.reply(`_memproses..._`)
+                    //const hsl = await fetchJson(`https://api.akuari.my.id/other/removebg?link=${anu}`)
+                    dans.sendImage(m.chat, `https://api.lolhuman.xyz/api/removebg?apikey=${lolkey}&img=${anu}`, `_Nih Kak_`, m)
                 } catch {
                     m.reply('_Terjadi Kesalahan Saat Memproses_')
                 }
@@ -1697,11 +1720,12 @@ break
 =======================
 *=======================*
 
-- - - _*advertisement*_  - - -
+- - - advertisement  - - -
 
-Youtube Premium 4 bulan *10k*
-Youtube Premium 6 bulan *15k* .
+- Youtube Premium 4 bulan 15k
+- Sewa Bot Bayar Seikhlasnya
 chat wa.me/6288983554021
+
 *=======================*
 =======================
 
@@ -2766,7 +2790,114 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                 break
             case 'ai':
                 try {
+					const acrcloud = require("acrcloud");
+					if (ispidio) {
+    let media = await dans.downloadMediaMessage(qmsg)
+    let {
+        toAudio
+    } = require('./lib/converter')
+    let audio = await toAudio(media, 'mp4')
+    const acru = new acrcloud({
 
+        host: "identify-eu-west-1.acrcloud.com",
+
+        access_key: 'c33c767d683f78bd17d4bd4991955d81',
+
+        access_secret: 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
+
+    });
+    //let media = await qmsg.download()
+    let ext = mime.split('/')[1]
+    fs.writeFileSync(`./tmp/${m.sender}.${ext}`, audio)
+    let res = await acru.identify(fs.readFileSync(`./tmp/${m.sender}.${ext}`))
+    let {
+        code,
+        msg
+    } = res.status
+    if (code !== 0) throw msg
+    let {
+        title,
+        artists,
+        album,
+        genres,
+        release_date
+    } = res.metadata.music[0]
+    let txt = `
+*CARI MUSIK*
+
+
+• 📌 *judul :* ${title}
+• 👨‍🎤 *Artis :* ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 💾 *Album :* ${album.name || 'NOT FOUND'}
+• 🌐 *Genre :* ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 📆 *Rilis :* ${release_date || 'NOT FOUND'}
+`.trim()
+    fs.unlinkSync(`./tmp/${m.sender}.${ext}`)
+    m.reply(txt)
+    let yts = require("yt-search")
+    carikeuni = `${title} ${artists}`
+    let search = await yts(carikeuni)
+    //console.log(search[0].author)
+    let anu = search.videos[0]
+    urllagu = anu.url
+    const yt = await youtubedl(urllagu).catch(async () => await youtubedlv2(urllagu))
+    const dl_url = await yt.audio['128kbps'].download()
+    
+    
+return
+}
+if (islagune) {
+  m.reply(`Mencari informasi Lagu...`)
+    const acru = new acrcloud({
+
+        host: "identify-eu-west-1.acrcloud.com",
+
+        access_key: 'c33c767d683f78bd17d4bd4991955d81',
+
+        access_secret: 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
+
+    });
+    let media = await qmsg.download()
+    let ext = mime.split('/')[1]
+    fs.writeFileSync(`./tmp/${m.sender}.${ext}`, media)
+    let res = await acru.identify(fs.readFileSync(`./tmp/${m.sender}.${ext}`))
+    let {
+        code,
+        msg
+    } = res.status
+    if (code !== 0) throw msg
+    let {
+        title,
+        artists,
+        album,
+        genres,
+        release_date
+    } = res.metadata.music[0]
+    let txt = `
+*CARI MUSIK*
+
+
+• 📌 *judul :* ${title}
+• 👨‍🎤 *Artis :* ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 💾 *Album :* ${album.name || 'NOT FOUND'}
+• 🌐 *Genre :* ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 📆 *Rilis :* ${release_date || 'NOT FOUND'}
+`.trim()
+    fs.unlinkSync(`./tmp/${m.sender}.${ext}`)
+    m.reply(txt)
+    let yts = require("yt-search")
+    carikeuni = `${title} ${artists}`
+    let search = await yts(carikeuni)
+    //console.log(search[0].author)
+    let anu = search.videos[0]
+    urllagu = anu.url
+    const yt = await youtubedl(urllagu).catch(async () => await youtubedlv2(urllagu))
+    const dl_url = await yt.audio['128kbps'].download()
+    //teks = `Mengirim Full lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
+   // m.reply(teks)
+    
+return
+}
                     if (!text) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu bot whatsapp`)
                     const configuration = new Configuration({
                         apiKey: aikey,
@@ -2785,7 +2916,7 @@ Lihat list Pesan Dengan ${prefix}listmsg`)
                     m.reply(`${response.data.choices[0].text}\n\n`)
                 } catch (err) {
                     console.log(err)
-                    m.reply('Maaf, sepertinya ada yang error')
+                    //m.reply('Maaf, sepertinya ada yang error')
                 }
                 break
             case 'plntagihantegalngandong':
@@ -3918,6 +4049,7 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                     }, {
                         quoted: m
                     })
+                  return
                 } catch {
                     m.reply('_Terjadi Kesalahan, Mencoba Menggunakan Server 2_')
                     tiktokdlv2(text)
@@ -4552,50 +4684,120 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
             }
             break
             case 'carimusik':
-            case 'whatmusic':
-                m.reply(`_Menganalisa Musik..._\n_Tunggu Sebentar_`)
-                try {
-                    let {
-                        UploadFileUgu,
-                        webp2mp4File,
-                        TelegraPh
-                    } = require('./lib/uploader')
-                    let media = await dans.downloadAndSaveMediaMessage(qmsg)
-                    let anu = await UploadFileUgu(media)
-                    console.log(anu)
-                    //console.log(util.format(anu))
-                    let hsl = anu.url
-                    const lgu = await fetchJson(`hhttps://api.lolhuman.xyz/api/musicsearch?apikey=ardanfajars&file=${hsl}`)
-                    console.log(lgu)
-                    let yts = require("yt-search")
-                    //cari = `${lgu.result.title} ${lgu.result.artist}`
-                    // let search = await yts(cari)
-                    // let anuq = search.videos[0]
-                    // urllagu = anuq.url
-                    teks = `*Informasi Musik Ditemukan*\n\n*Judul :* ${lgu.result.title}\n*Penyanyi :* ${lgu.result.artists[0]}\n*Album :* ${lgu.result.album}\n*Genre :* ${lgu.result.genres[0]}\n*Rilis :* ${lgu.result.release}\n\n\n*= = =DansBot= = =*`
-                    /*let buttons = [{
-                                            buttonId: `audio ${lgu.result.title} ${lgu.result.artist}`,
-                                            buttonText: {
-                                                displayText: 'Full lagu'
-                                            },
-                                            type: 1
-                                        }
-                                    ]
-                                    let buttonMessage = {
-                                        text: teks,
-                                        footer: `Klik Dibawah ini Jika Ingin versi Fullnya`,
-                                        buttons: buttons,
-                                        headerType: 4
-                                    }
-                                    dans.sendMessage(m.chat, buttonMessage, {
-                                        quoted: m
-                                    })
-                                    */
+            case 'whatmusic':{
+//try{
+	//host = 'identify-eu-west-1.acrcloud.com',
+//access_key = 'c33c767d683f78bd17d4bd4991955d81',
+//access_secret = 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
+const acrcloud = require("acrcloud");
+if (ispidio) {
+	let media = await dans.downloadMediaMessage(qmsg)
+                let {
+                    toAudio
+                } = require('./lib/converter')
+                let audio = await toAudio(media, 'mp4')
+				const acru = new acrcloud({
+
+  host: "identify-eu-west-1.acrcloud.com",
+
+  access_key: 'c33c767d683f78bd17d4bd4991955d81',
+
+  access_secret: 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
+
+});
+//let media = await qmsg.download()
+let ext = mime.split('/')[1]
+fs.writeFileSync(`./tmp/${m.sender}.${ext}`, audio)
+let res = await acru.identify(fs.readFileSync(`./tmp/${m.sender}.${ext}`))
+let { code, msg } = res.status
+if (code !== 0) throw msg
+let { title, artists, album, genres, release_date } = res.metadata.music[0]
+let txt = `
+*CARI MUSIK*
+
+
+• 📌 *judul :* ${title}
+• 👨‍🎤 *Artis :* ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 💾 *Album :* ${album.name || 'NOT FOUND'}
+• 🌐 *Genre :* ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 📆 *Rilis :* ${release_date || 'NOT FOUND'}
+`.trim()
+fs.unlinkSync(`./tmp/${m.sender}.${ext}`)
+m.reply(txt)
+let yts = require("yt-search")
+carikeuni = `${title} ${artists}`
+                    let search = await yts(carikeuni)
+                  //console.log(search[0].author)
+                    let anu = search.videos[0]
+                    urllagu = anu.url
+                    const yt = await youtubedl(urllagu).catch(async () => await youtubedlv2(urllagu))
+                    const dl_url = await yt.audio['128kbps'].download()
+                    teks = `Mengirim Full lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
                     m.reply(teks)
-                } catch {
-                    m.reply(`Maaf, Tidak Ketemu nih...`)
-                }
-                break
+                    dans.sendMessage(m.chat, {
+                        audio: {
+                            url: dl_url
+                        },
+                        mimetype: 'audio/mpeg',
+                        fileName: `${yt.title}.mp3`
+                    }, {
+                        quoted: m
+                    })
+				
+}
+
+const acr = new acrcloud({
+
+  host: "identify-eu-west-1.acrcloud.com",
+
+  access_key: 'c33c767d683f78bd17d4bd4991955d81',
+
+  access_secret: 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
+
+});
+let media = await qmsg.download()
+let ext = mime.split('/')[1]
+fs.writeFileSync(`./tmp/${m.sender}.${ext}`, media)
+let res = await acr.identify(fs.readFileSync(`./tmp/${m.sender}.${ext}`))
+let { code, msg } = res.status
+if (code !== 0) throw msg
+let { title, artists, album, genres, release_date } = res.metadata.music[0]
+let txt = `
+*CARI MUSIK*
+
+
+• 📌 *judul :* ${title}
+• 👨‍🎤 *Artis :* ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 💾 *Album :* ${album.name || 'NOT FOUND'}
+• 🌐 *Genre :* ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
+• 📆 *Rilis :* ${release_date || 'NOT FOUND'}
+`.trim()
+fs.unlinkSync(`./tmp/${m.sender}.${ext}`)
+m.reply(txt)
+let yts = require("yt-search")
+carikeuni = `${title} ${artists}`
+                    let search = await yts(carikeuni)
+                  //console.log(search[0].author)
+                    let anu = search.videos[0]
+                    urllagu = anu.url
+                    const yt = await youtubedl(urllagu).catch(async () => await youtubedlv2(urllagu))
+                    const dl_url = await yt.audio['128kbps'].download()
+                    teks = `Mengirim Full lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
+                    m.reply(teks)
+                    dans.sendMessage(m.chat, {
+                        audio: {
+                            url: dl_url
+                        },
+                        mimetype: 'audio/mpeg',
+                        fileName: `${yt.title}.mp3`
+                    }, {
+                        quoted: m
+                    })
+//} catch {
+//m.reply(`Terjadi Kesalahan Saat Memproses`)
+//}
+}
+break
                 /////////informasi
             case 'infogempa':
             case 'gempa': {
