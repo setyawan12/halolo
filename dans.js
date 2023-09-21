@@ -105,6 +105,7 @@ const {
     ytMp3
 } = require('./lib/yt.js')
 
+
 /*const {
     Y2MateVideoDetail,
   Y2MateSearchResult,
@@ -130,7 +131,7 @@ const mathjs = require('mathjs')
 const { createCanvas, loadImage } = require('canvas');
 const { decryptMedia } = require('@open-wa/wa-decrypt');
 const tunggu = `*_Tunggu Sebentar_*`
-const aikey = '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'
+const aikey = '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'
 const AI2D = require('@arugaz/ai2d')
 const { JadiAnime } = require('jadianime-ts')
 const acrCloud = require("acrcloud");
@@ -908,7 +909,15 @@ teks = `*Informasi Cuaca ${a.tempat}*
 m.reply(`_Informasi Cuaca Untuk ${text} Tidak Tersedia_`)
 }
 break
-            case 'upscale':
+			case 'imagehd': case 'upscale': case 'remini': case 'jernih': {
+		if(!isMedia) return m.reply(`_kirim gambar dengan caption !jadianime/ tag gambar_`)
+        const { remini } = require('./lib/remini.js');
+        let image = await quoted.download();
+        let res = await remini(image, 'enhance');
+		dans.sendImage(m.chat, res, `_Nih Kak_`, m)
+      }
+      break
+            case 'upscaleuu':
             if(!isMedia) return m.reply(`_kirim gambar dengan caption !jadianime/ tag gambar_`)
             {
                     let {
@@ -1841,7 +1850,7 @@ break
 *Hostname :* DansPC
 *Platform :* ${plat}
 *Runtime :* ${runtimes}
-*last Update:* 16/4/23
+*last Update:* 15/9/23
 =======================
 *Hari :* ${week} ${weton}
 *Tanggal :* ${date}		
@@ -1852,8 +1861,8 @@ break
 
 - - - _*advertisement*_  - - -
 
-- Youtube Premium 4 bulan *15k*
-- Sewa Bot *Bayar Seikhlasnya*
+- Youtube Premium 4 bulan
+- Sewa Bot
 chat wa.me/6288983554021
 *=======================*
 =======================
@@ -1907,6 +1916,7 @@ menunya:
 !tiktokaudio
 !instagram
 !twitter
+!facebook
 !cocofun
 !spotify
 !snack
@@ -2112,7 +2122,7 @@ recode : Ardan
             case 'balas': {
                 if (!isCreator) throw mess.owner
                 a = args.join(' ')
-                if (!a) return reply('Masukan Parameter\n.balas no|balasan')
+                if (!a) return m.reply('Masukan Parameter\n.balas no|balasan')
                 b = a.split('|')[0]
                 cok = a.split('|')[1]
                 teks = `*Report Reply Notification*\n\n\n_"${cok}"_`
@@ -2125,7 +2135,7 @@ recode : Ardan
             case 'balas2': {
                 if (!isCreator) throw mess.owner
                 a = args.join(' ')
-                if (!a) return reply('Masukan Parameter\n.balas no|balasan')
+                if (!a) return m.reply('Masukan Parameter\n.balas no|balasan')
                 b = a.split('|')[0]
                 cok = a.split('|')[1]
                 //teks = `*Pesan Dari owner*\n\n\n_"${cok}"_`
@@ -3066,7 +3076,7 @@ if (islagune) {
     
 return
 }
-if (!text) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu bot whatsapp`)
+if (!text) return m.reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu bot whatsapp`)
 const gptText = text
 const configuration = new Configuration({
     apiKey: aikey,
@@ -3785,6 +3795,69 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
 
             ////endislami////
             ////////DOWNLOADER///////
+			
+			case 'lagu':
+            case 'audio':
+          case 'play':{
+
+                if (!text) return m.reply(`mau cari lagu apa?`)
+                try {
+                    m.reply(tunggu)
+                    let {
+                        yta
+                    } = require('./lib/y2mate')
+                    let yts = require("yt-search")
+                    let search = await yts(text)
+                  //console.log(search[0].author)
+                    let anu = search.videos[0]
+                    urllagu = anu.url
+                    const yt = await youtubedl(urllagu).catch(async () => await youtubedlv2(urllagu))
+                    const dl_url = await yt.audio['128kbps'].download()
+                  console.log(dl_url)
+                    teks = `Mengirim lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
+                    m.reply(teks)
+                    dans.sendMessage(m.chat, {
+                        audio: {
+                            url: dl_url
+                        },
+                        mimetype: 'audio/mpeg',
+                        fileName: `${yt.title}.mp3`
+                    }, {
+                        quoted: m
+                    })
+                } catch {
+                    m.reply('_Terjadi Kesalahan Saat Memproses_')
+                }
+            }
+            break
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			     			case 'fbdl':
+            case 'fb':
+			case 'facebook':
+                try {
+                  //if (!isCreator) return m.reply('*_Under Maintenance_*')
+                    if (!text) return m.reply('Linknya?')
+                    m.reply(tunggu)
+                    const fb2 = await fetchJson(`https://api.lolhuman.xyz/api/facebook?apikey=ardanfajars&url=${text}`)
+                    //m.reply(`_Memproses.._`)
+					dans.sendFileUrl(m.chat, fb2.result[0], `_Nih Kak_`, m)
+                  return
+                } 
+                catch {
+                  m.reply('Ups maaf server sedang error, Harap Ulangi Beberapa Saat Lagi...')
+                }
+                break
             case 'ig':
             case 'igdl':
             case 'instagram':
@@ -3792,13 +3865,13 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                   //if (!isCreator) return m.reply('*_Under Maintenance_*')
                     if (!text) return m.reply('Linknya?')
                     m.reply(tunggu)
-                    const igs2 = await fetchJson(`https://api.akuari.my.id/downloader/igdl?link=${text}`)
+                    const igs2 = await fetchJson(`https://api.lolhuman.xyz/api/instagram2?apikey=ardanfajars&url=${text}`)
                     //const igs = await fetchJson(`https://api.lolhuman.xyz/api/instagram2?apikey=${lolkey}&url=${text}`)
                   
-                   const teks2 = `_Tunggu Sebentar_`
-                    //const teksx = `*IG DOWNLOADER*\n\n*Dari:* ${igs.result.account.username} _(${igs.result.account.full_name})_\n${igs.result.caption} \n\n*_Media Sedang Dikirim._*\n\n@dans_bot`
-                    //m.reply(teks2)
-                 for (let i of igs2.respon) {
+                   //const teks2 = `_Tunggu Sebentar_`
+                    const teksx = `*IG DOWNLOADER*\n\n*Dari:* ${igs2.result.account.username} _(${igs2.result.account.full_name})_\n${igs2.result.caption} \n\n*_Media Sedang Dikirim._*\n\n@dans_bot`
+                    m.reply(teksx)
+                 for (let i of igs2.result.media) {
                         //let link = await getBuffer(i.url)
                         console.log(i)
                         //setTimeout(() => {
@@ -3815,7 +3888,7 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
 
                 
                     for (let i of igsy.result) {
-                        //let link = await getBuffer(i.url)
+                        //let li nk = await getBuffer(i.url)
                         console.log(i)
                         setTimeout(() => {
                     dans.sendFileUrl(m.chat, i, `_Nih Kak_`, m)
@@ -4034,7 +4107,7 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
                 }
             }
             break
-            case 'video': {
+             case 'video': {
                 try {
                     if (!text) return m.reply(`mau cari video apa?`)
                     m.reply(tunggu)
@@ -4167,7 +4240,33 @@ teksal = `_Dikarenakan Terjadi Masalah Pada Menu Button_\nMaka Dari itu Menu Ala
             break
 
 
-            case 'lagu':
+            case 'lagu44':
+            case 'audio44':
+          case 'play44':{
+               
+                if (!text) return m.reply(`mau cari lagu apa?`)
+              //  try {
+                    m.reply(tunggu)
+                    const aa = await fetchJson(`https://api.lolhuman.xyz/api/ytplay?apikey=ardanfajars&query=${text}`)
+					console.log(aa)
+                   teks = `Mengirim Lagu *${aa.result.title}*\ntunggu sebentar...\n`
+                  m.reply(teks)
+				 
+                    dans.sendMessage(m.chat, {
+                        audio: {
+                           url: aa.result.audio.link
+                       },
+                        mimetype: 'audio/mpeg',
+                       fileName: `${aa.result.title}.mp3`
+                    }, {
+                        quoted: m
+                    })
+              //  } catch {
+                  //  m.reply('_Terjadi Kesalahan Saat Memproses_')
+              //  }
+            }
+            break
+			case 'lagu':
             case 'audio':
           case 'play':{
 
@@ -4896,19 +4995,7 @@ carikeuni = `${title} ${artists}`
                   //console.log(search[0].author)
                     let anu = search.videos[0]
                     urllagu = anu.url
-                    const yt = await youtubedl(urllagu).catch(async () => await youtubedlv2(urllagu))
-                    const dl_url = await yt.audio['128kbps'].download()
-                    teks = `Mengirim Full lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
-                    m.reply(teks)
-                    dans.sendMessage(m.chat, {
-                        audio: {
-                            url: dl_url
-                        },
-                        mimetype: 'audio/mpeg',
-                        fileName: `${yt.title}.mp3`
-                    }, {
-                        quoted: m
-                    })
+                    
 				
 }
 
@@ -5321,67 +5408,59 @@ break
 
             default:
 
-            ///auto grub
+            				///auto grub
                 if (ismediah && budy != undefined) {
-                    console.log(budy)
+					console.log(budy)
                     if (isTiktok) {
-                        m.reply(`*Link Tiktok Terdeteksi (${budy})*\n\nBot Akan Kirim Videonya\nTunggu kak...`)
+					try{
+                        m.reply(`*Sebuah Link Tiktok Terdeteksi (${budy})*\n\nBot Akan Kirim Videonya...`)
                         console.log(`iki ngab ${budy}`)
                         const adon = await fetchJson(`https://api.lolhuman.xyz/api/tiktok?apikey=${lolkey}&url=${budy}`)
-                      //console.log(adon)
-                      console.log('AutoDown Tiktok')
-                    p1 = adon.result
-                    teks = `*Tiktok Downloader By DansBot*\n\n*Judul :* ${p1.title}\n*Author :* ${p1.author.username} _(${p1.author.nickname})_\n*Like :* ${p1.statistic.like_count}\n*Komentar :* ${p1.statistic.comment_count}\n*Jumlah Share :* ${p1.statistic.share_count}\n*Penonton :* ${p1.statistic.play_count}\n`
-                      
-
-                    dans.sendMessage(m.chat, {
-                        video: {
-                            url: p1.link
-                        },
-                        caption: teks,
-                        mimetype: 'video/mp4',
-                        fileName: `tiktok.mp4`
-                    }, {
-                        quoted: m
-                    })
-                      return
+						console.log('AutoDown Tiktok')
+						p1 = adon.result
+						teks = `*Tiktok Downloader By DansBot*\n\n*Judul :* ${p1.title}\n*Author :* ${p1.author.username} _(${p1.author.nickname})_\n*Like :* ${p1.statistic.like_count}\n*Komentar :* ${p1.statistic.comment_count}\n*Jumlah Share :* ${p1.statistic.share_count}\n*Penonton :* ${p1.statistic.play_count}\n`
+						dans.sendMessage(m.chat, {video: { url: p1.link },caption: teks, mimetype: 'video/mp4', fileName: `tiktok.mp4`}, {quoted: m})
+						return
+					 } catch {
+						m.reply(`_Terjadi Kesalahn Dalam Memproses, harap ulangi Beberapa Saat lagi_`)
+					}
                     }
+					//=====================================
                     if (isInsta) {
-                        m.reply(`*Link Instagram Terdeteksi*\n\nBot Akan Kirim Medianya\nTunggu kak...`)
-                        const igs = await fetchJson(`https://api.akuari.my.id/downloader/igdl2?link=${budy}`)
-					console.log(igs)
-                    //const teksx = `*IG DOWNLOADER*\n\n*Dari:* ${igs.result.account.username} _(${igs.result.account.full_name})_\n${igs.result.caption} \n\n*_Media Sedang Dikirim._*\n\n@dans_bot`
-                    //m.reply(teksx)
-                    for (let i of igs.respon) {
-                        //let link = await getBuffer(i.url)
-                        console.log(i)
-                      setTimeout(() => {
-                    dans.sendFileUrl(m.chat, i.url, `_Nih Kak_`, m)
-                }, 5000)
-                       
-                }
-                      return
+					try{
+						m.reply(`*Sebuah Link Instagram Terdeteksi*\n\nBot Akan Kirim Medianya...`)
+						const igs = await fetchJson(`https://api.akuari.my.id/downloader/igdl2?link=${budy}`)
+						console.log(igs)
+						//const teksx = `*IG DOWNLOADER*\n\n*Dari:* ${igs.result.account.username} _(${igs.result.account.full_name})_\n${igs.result.caption} \n\n*_Media Sedang Dikirim._*\n\n@dans_bot`
+						//m.reply(teksx)
+						for (let i of igs.respon) {
+						console.log(i)
+						setTimeout(() => {
+							dans.sendFileUrl(m.chat, i.url, `_Nih Kak_`, m)
+							}, 5000)    
+						}
+						return
+					} catch {
+						m.reply(`_Terjadi Kesalahn Dalam Memproses, harap ulangi Beberapa Saat lagi_`)
+					}
                     }
+					//=====================================
                     if (isYucup) {
-                      m.reply(`*Link Youtube Terdeteksi (${budy})*\n\nBot Akan Kirim Medianya\nTunggu kak...`)
-                        const yt = await youtubedl(budy).catch(async () => await youtubedlv2(url))
-                    const dl_url = await yt.audio['128kbps'].download()
-                    console.log(dl_url)
-                    let yts = require("yt-search")
-                    let search = await yts(yt.title)
-                    let anu = search.videos[0]
-                    teksnyax = `Mengirim lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
-                    dans.sendImage(m.chat, yt.thumbnail, teksnyax, m)
-                    dans.sendMessage(m.chat, {
-                        audio: {
-                            url: dl_url
-                        },
-                        mimetype: 'audio/mpeg',
-                        fileName: `${anu.title}.mp3`
-                    }, {
-                        quoted: m
-                    })
-                      return
+					try{
+						m.reply(`*Link Youtube Terdeteksi (${budy})*\n\nBot Akan Kirim Medianya\nTunggu kak...`)
+						const yt = await youtubedl(budy).catch(async () => await youtubedlv2(url))
+						const dl_url = await yt.audio['128kbps'].download()
+						console.log(dl_url)
+						let yts = require("yt-search")
+						let search = await yts(yt.title)
+						let anu = search.videos[0]
+						teksnyax = `Mengirim lagu *${anu.title}* dari *${anu.author.name}*\ntunggu sebentar...`
+						dans.sendImage(m.chat, yt.thumbnail, teksnyax, m)
+						dans.sendMessage(m.chat, { audio: { url: dl_url }, mimetype: 'audio/mpeg', fileName: `${anu.title}.mp3` }, { quoted: m })
+						return
+					} catch {
+						m.reply(`_Terjadi Kesalahn Dalam Memproses, harap ulangi Beberapa Saat lagi_`)
+					}
                     }
                 }
             
